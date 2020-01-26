@@ -11,7 +11,6 @@ public class Main
     {
         int[] intArray = {20, 35, -15, 7, 55, 1, -22};
 
-
         try (Scanner scanner = new Scanner(System.in))
         {
             while (!quit)
@@ -29,6 +28,36 @@ public class Main
         }
     }
 
+    private static void mergeSort(int[] intArray, int start, int end)
+    {
+        if (end - start < 2)
+        {
+            return;
+        }
+
+        int mid = (start + end) / 2;
+        mergeSort(intArray, start, mid);
+        mergeSort(intArray, mid, end);
+        merge(intArray, start, mid, end);
+    }
+
+    private static void merge(int[] input, int start, int mid, int end)
+    {
+        if (input[mid - 1] <= input[mid])
+        {
+            return;
+        }
+        int i = start;
+        int j = mid;
+        int tempIndex = 0;
+        int[] temp = new int[end - start];
+        while (i < mid && j < end)
+        {
+            temp[tempIndex++] = input[i] <= input[j] ? input[i++] : input[j++];
+        }
+        System.arraycopy(input, i, input, start + tempIndex, mid - i);
+        System.arraycopy(temp, 0, input, start, tempIndex);
+    }
 
     private static void shellSort(int[] intArray)
     {
@@ -119,6 +148,7 @@ public class Main
         System.out.println("2. Selection Sort");
         System.out.println("3. Insertion Sort");
         System.out.println("4. Shell Sort");
+        System.out.println("5. Merge Sort");
         System.out.println("=====================");
         System.out.println("Choose an option:");
     }
@@ -151,14 +181,17 @@ public class Main
                 System.out.println("Shell Sort");
                 shellSort(intArray);
                 break;
-
+            case "5":
+                System.out.println("Merge Sort");
+                mergeSort(intArray, 0, intArray.length);
+                break;
             default:
                 System.out.println("Invalid input.");
                 return false;
 
         }
         long timeEnd = System.nanoTime();
-        System.out.println("Time taken for sorting: " + (timeEnd-timeStart) +"ns");
+        System.out.println("Time taken for sorting: " + (timeEnd - timeStart) + "ns");
         return true;
     }
 
